@@ -1,6 +1,6 @@
 import express from "express";
 
-import * as userController from "./controllers/user";
+import * as user from "./controllers/user";
 
 // Create Express server
 const app = express();
@@ -9,8 +9,8 @@ const app = express();
 app.set("port", process.env.PORT || 3000);
 
 // Endpoints
-app.post("/creacliente", userController.createUser);
-app.get("/kpideclientes", userController.readUser);
-app.get("/listclientes", userController.listUsers);
+app.post("/creacliente", user.create);
+app.get("/kpideclientes", user.kpi);
+app.get("/listclientes", user.list);
 
 export default app;
