@@ -5,10 +5,32 @@ import moment from "moment";
 
 import { firebaseConfig } from "../config/firebase";
 
+interface User {
+  birthDate: Date;
+  firstName: string;
+  lastName: string;
+}
+
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 
 export const create = (req: Request, res: Response) => {
-  res.send({ message: "Create User" });
+  const user: User = {
+    birthDate: moment(req.body.birthDate, "DD/MM/YYYY").toDate(),
+    firstName: req.body.firstName,
+    lastName: req.body.lastName
+  };
+
+  firebaseApp
+    .firestore()
+    .collection("users")
+    .add(user)
+    .then(() => {
+      res.send({ message: "El usuario a sido creado satifactoriamente" });
+    })
+    .catch(error => {
+      console.error(error);
+      res.status(400).send({ message: "Ocurrió un problema al intentar crear el usuario" });
+    });
 };
 
 export const getUsers = (_: Request, res: Response, next: NextFunction) => {
